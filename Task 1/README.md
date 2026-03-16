@@ -1,4 +1,4 @@
-# Task 1 — Balatro-Like Run Loop
+# Task 1 - Balatro-Like Run Loop
 
 ## Program Behavior
 Simulates a 3-round run with a fixed phase order each round, followed by a shop phase.
@@ -6,7 +6,7 @@ Demonstrates two modifications that change behavior without touching RunSession.
 
 ---
 
-## Phase Order (Invariant — never changes)
+## Phase Order (Invariant - never changes)
 
 For each of 3 rounds:
 1. Generate input
@@ -18,26 +18,44 @@ For each of 3 rounds:
 
 ---
 
+## How to Run
+
+### Option 1 - Batch file (recommended)
+Double-click `run.bat` inside the `Task 1` folder. It will automatically compile and run the program in a terminal window.
+
+### Option 2 - Manual terminal
+Open a terminal, navigate to the `Task 1` folder, then run:
+```bash
+g++ -std=c++17 main.cpp FixedInputGenerator.cpp RandomInputGenerator.cpp DirectScoringRule.cpp BaseRewardRule.cpp BonusRewardRule.cpp ShopSystem.cpp RunSession.cpp -o task1.exe
+./task1.exe
+```
+
+### Requirements
+- g++ with C++17 support (MinGW-w64 / msys64 recommended on Windows)
+
+---
+
 ## File Structure
 
 ```
-TurnInput.h                  — Data passed between phases
-IInputGenerator.h            — Interface: generates TurnInput
-IScoringRule.h               — Interface: computes base score
-IRewardRule.h                — Interface: computes money reward
-FixedInputGenerator.h/.cpp   — Always returns a fixed value
-RandomInputGenerator.h/.cpp  — Returns a random value (Modification 1)
-DirectScoringRule.h/.cpp     — Score = input value
-BaseRewardRule.h/.cpp        — Reward = base score (original)
-BonusRewardRule.h/.cpp       — Reward != base score (Modification 2)
-ShopSystem.h/.cpp            — Shop phase logic
-RunSession.h/.cpp            — Invariant loop controller
-main.cpp                     — Entry point, wires dependencies together
+TurnInput.h                  - Data passed between phases
+IInputGenerator.h            - Interface: generates TurnInput
+IScoringRule.h               - Interface: computes base score
+IRewardRule.h                - Interface: computes money reward
+FixedInputGenerator.h/.cpp   - Always returns a fixed value
+RandomInputGenerator.h/.cpp  - Returns a random value (Modification 1)
+DirectScoringRule.h/.cpp     - Score = input value
+BaseRewardRule.h/.cpp        - Reward = base score (original)
+BonusRewardRule.h/.cpp       - Reward != base score (Modification 2)
+ShopSystem.h/.cpp            - Shop phase logic
+RunSession.h/.cpp            - Invariant loop controller
+main.cpp                     - Entry point, wires dependencies together
+run.bat                      - Compile and run script (Windows)
 ```
 
 ---
 
-## Modification 1 — Replace Input Generator
+## Modification 1 - Replace Input Generator
 
 `RandomInputGenerator` replaces `FixedInputGenerator`.
 
@@ -55,7 +73,7 @@ not on any concrete class. Swapping the generator is invisible to RunSession.
 
 ---
 
-## Modification 2 — Change Reward Logic
+## Modification 2 - Change Reward Logic
 
 `BonusRewardRule` replaces `BaseRewardRule`.
 
@@ -85,14 +103,14 @@ GenerateInput → ComputeScore → ComputeReward → UpdateMoney → Shop → Ad
 This sequence must never change. Each phase depends on the result of the previous one.
 
 ### 2. Which parts are mutable?
-- How input is generated (`IInputGenerator` — swap `FixedInputGenerator` for `RandomInputGenerator`)
-- How score is computed (`IScoringRule` — swap or change `DirectScoringRule`)
-- How reward is computed (`IRewardRule` — swap `BaseRewardRule` for `BonusRewardRule`)
-- What the shop offers (`ShopSystem` — change items, cost, or quantity inside)
+- How input is generated (`IInputGenerator` - swap `FixedInputGenerator` for `RandomInputGenerator`)
+- How score is computed (`IScoringRule` - swap or change `DirectScoringRule`)
+- How reward is computed (`IRewardRule` - swap `BaseRewardRule` for `BonusRewardRule`)
+- What the shop offers (`ShopSystem` - change items, cost, or quantity inside)
 
 ### 3. When you replaced the InputGenerator, why didn't RunSession change?
 Because `RunSession` depends on the `IInputGenerator` interface, not on any specific
-class. It only calls `generator_->Generate()`. It does not know — or care — whether
+class. It only calls `generator_->Generate()`. It does not know - or care - whether
 the generator is fixed or random. The concrete class is injected from outside
 (in `main.cpp`), so swapping it requires zero changes to `RunSession`.
 
