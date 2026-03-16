@@ -1,0 +1,19 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Run Task1",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "E:/Documents/GitHub/Design-Pattern-2/Task 1/task1.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "E:/Documents/GitHub/Design-Pattern-2/Task 1",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "miDebuggerPath": "C:/msys64/ucrt64/bin/gdb.exe",
+            "preLaunchTask": "Build Task1"
+        }
+    ]
+}
